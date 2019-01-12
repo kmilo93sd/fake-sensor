@@ -9,17 +9,22 @@ class Thermometer
 	private static $hotMin = 30.01;
 	private static $hotMax = 40;
 
-	public static function measure()
+	public static function measure(Weather $weather)
 	{
-		$probability = mt_rand(0, 100);
-		if ($probability <= 5) {
-			return mt_rand(static::$coldMin*10, static::$coldMax*10)/10;
+		
+		if ($weather->isCold()) {
+			return static::randomInRange(static::$coldMin, static::$coldMax);
 		}
 
-		if ($probability >= 95) {
-			return mt_rand(static::$hotMin*10, static::$hotMax*10)/10;
+		if ($weather->isHot()) {
+			return static::randomInRange(static::$hotMin, static::$hotMax);
 		}
 
-		return mt_rand(static::$min*10, static::$max*10)/10;
+		return static::randomInRange(static::$min, static::$max);
+	}
+
+	private static function randomInRange($min, $max)
+	{
+		return mt_rand($min*10, $max*10)/10;
 	}
 }
